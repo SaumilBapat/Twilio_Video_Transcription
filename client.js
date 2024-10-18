@@ -6,6 +6,9 @@
 // Replace with your actual Twilio Access Token
 const token = 'YOUR_TWILIO_ACCESS_TOKEN';
 
+// Open WebSocket connection to the server
+const socket = new WebSocket('ws://localhost:8080');
+
 // Connect to a Twilio Video room
 Twilio.Video.connect(token, { name: 'my-room' }).then(room => {
   console.log(`Connected to Room: ${room.name}`);
@@ -56,25 +59,20 @@ function processAudioTrack(audioTrack) {
     source.connect(processor);
     processor.connect(audioContext.destination);
 
-    // Open WebSocket connection to the server
-    const socket = new WebSocket('ws://localhost:8080');
-
     // Send audio data to the server
     processor.port.onmessage = event => {
       const audioData = event.data;
-      // Convert Float32Array to ArrayBuffer for transmission
-      const audioBuffer = float32ToArrayBuffer(audioData);
-      socket.send(audioBuffer);
+      // Send raw Float32Array buffer to the server
+      socket.send(audioData);
+    };
+
+    // Handle transcription messages from the server
+    socket.onmessage = event => {
+      const data = JSON.parse(event.data);
+      if (data.transcription) {
+        console.log('Transcription:', data.transcription);
+        // Display transcription in the UI as needed
+      }
     };
   });
-}
-
-// Helper function to convert Float32Array to ArrayBuffer
-function float32ToArrayBuffer(float32Array) {
-  const buffer = new ArrayBuffer(float32Array.length * 4);
-  const view = new DataView(buffer);
-  for (let i = 0; i < float32Array.length; i++) {
-    view.setFloat32(i * 4, float32Array[i], true);
-  }
-  return buffer;
 }

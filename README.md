@@ -1,6 +1,6 @@
-# Project Overview
+# Real-Time Audio Transcription with Twilio Video and OpenAI's Real-Time API
 
-This project captures real-time audio from participants in a Twilio Video room, streams the audio data to a server via WebSocket, and transcribes it using OpenAI's Whisper API.
+This project captures real-time audio from participants in a Twilio Video room, streams the audio data to a server via WebSocket, and transcribes it using OpenAI's new real-time API. The transcribed text can be used for live captioning, meeting notes, or any other application requiring real-time speech-to-text conversion.
 
 ## Files
 
@@ -12,7 +12,7 @@ This project captures real-time audio from participants in a Twilio Video room, 
 
 ### Server-Side
 
-- **`server.js`**: Sets up a WebSocket server to receive audio data from the client, processes the audio data, converts it into WAV format, and sends it to OpenAI's Whisper API for transcription.
+- **`server.js`**: Sets up a WebSocket server to receive audio data from the client, forwards it to OpenAI's real-time API, and handles the transcription results.
 - **`.env`**: A configuration file that stores environment variables like the OpenAI API key (not included in the repository for security reasons).
 
 ## Libraries Used
@@ -27,9 +27,8 @@ This project captures real-time audio from participants in a Twilio Video room, 
 
 - **Node.js**: Server-side JavaScript runtime.
 - **ws**: WebSocket library for Node.js.
-- **OpenAI API**: Used to transcribe audio data using the Whisper model.
+- **OpenAI's Real-Time API**: Used to transcribe audio data in real time.
 - **dotenv**: Loads environment variables from a `.env` file.
-- **fs**: File system module to handle file operations.
 
 ## Setup Instructions
 
@@ -87,12 +86,12 @@ This project captures real-time audio from participants in a Twilio Video room, 
 ## Usage
 
 - The client connects to a Twilio Video room, captures audio from participants, and streams it to the server.
-- The server receives the audio data, processes it, and sends it to OpenAI's Whisper API for transcription.
-- Transcriptions are logged in the server console.
+- The server receives the audio data, forwards it to OpenAI's real-time API, and handles the transcription results.
+- Transcriptions are logged in the server console and can be sent back to the client.
 
 ## Important Notes
 
 - **Permissions**: Ensure you have consent from all participants before capturing and processing audio.
 - **Privacy**: Handle all data according to privacy laws and regulations.
 - **Security**: Do not commit the `.env` file or any sensitive information to version control.
-
+- **API Access**: Ensure your OpenAI API key has access to the real-time API features.

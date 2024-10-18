@@ -3,11 +3,11 @@
 class AudioProcessor extends AudioWorkletProcessor {
     process(inputs, outputs, parameters) {
       const input = inputs[0];
-      if (input.length > 0) {
-        const channelData = input[0]; // Get data from the first channel
+      if (input && input[0]) {
+        const channelData = input[0];
   
-        // Send the Float32Array to the main thread
-        this.port.postMessage(channelData);
+        // Post the audio data to the main thread
+        this.port.postMessage(channelData.slice(0)); // Send a copy of the buffer
       }
       return true;
     }
